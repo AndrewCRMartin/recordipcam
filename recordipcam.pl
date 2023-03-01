@@ -79,7 +79,7 @@ sub SignalHandler
 sub ManageData
 {
     my($hConfig) = @_;
-    $0 = 'recordip-ManageData';
+    $0 = 'recordipcam-ManageData';
     print "Started data management process\n";
     while(1)
     {
@@ -118,7 +118,7 @@ sub DeleteOldFiles
 sub DataCheck
 {
     my($hConfig) = @_;
-    $0 = 'recordip-DataCheck';
+    $0 = 'recordipcam-DataCheck';
     print "Started data checking process\n";
     while(1)
     {
@@ -148,7 +148,7 @@ sub CheckData
 sub RecordVideo
 {
     my($hConfig) = @_;
-    $0 = 'recordip-Record';
+    $0 = 'recordipcam-Record';
     print "Started recording video\n";
 
     my $url = $$hConfig{'url'};
