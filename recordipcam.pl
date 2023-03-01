@@ -1,5 +1,6 @@
 #!/usr/bin/perl
 
+use strict;
 use lib '.';
 use config;
 use utils;
@@ -149,24 +150,38 @@ sub RecordVideo
     my($hConfig) = @_;
     $0 = 'recordip-Record';
     print "Started recording video\n";
-    my $exe = "xxxxxxxxx";
+
+    my $url = $$hConfig{'url'};
+    my $outputDir = $$hConfig{'outputDir'};
+    my $segmentLength = $$hConfig{'segmentLength'};
+    
+    my $exe = "ffmpeg -hide_banner -y -loglevel error ";
+    $exe .= "-rtsp_transport tcp -use_wallclock_as_timestamps 1 ";
+    $exe .= "-i $url -vcodec copy -acodec copy ";
+    $exe .= "-f segment -reset_timestamps 1 ";
+    $exe .= "-segment_time $segmentLength -segment_format mkv ";
+    $exe .= "-segment_atclocktime 1 -strftime 1 ";
+    $exe .= "$outputDir/%Y%m%dT%H%M%S.mkv &>$outputDir/ffmpeg.log";
+
+    print STDERR "$exe\n";
 
     while(1)
     {
         my $givenError = 0;
 
-        #        system($exe);
-        sleep(20);
+        system($exe);   # This will keep running 
+        print STDERR "ffmpeg died!\n";
 
-        if(!CameraUp($$hConfig{'ip'}))
+        while(!CameraUp($$hConfig{'ip'}))
         {
             if(!$givenError)
             {
-                print STDERR "ffmpeg died as camera is down. Sleeping...\n";
+                print STDERR "Camera is down. Sleeping...\n";
                 $givenError = 1;
             }
             sleep 60;
         }
+        sleep 60;
     }
 }
 
