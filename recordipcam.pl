@@ -141,6 +141,15 @@ sub KillFFMpeg
 sub CheckData
 {
     my($hConfig) = @_;
+    my $dataDir = $$hConfig{'outputDir'};
+    my $exe = "ls -ltr $dataDir | tail -1 | awk '{print $5}'";
+    my $ls0 = `$exe`;
+    sleep 10;
+    my $ls1 = `$exe`;
+
+    # File size hasn't changhed in 10 sec - no data being collected
+    return(0) if($ls0 == $ls1);
+    
     return(1);
 }
 
