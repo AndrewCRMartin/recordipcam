@@ -133,8 +133,9 @@ sub DataCheck
 sub KillFFMpeg
 {
     my($hConfig) = @_;
-    my $result = `ps auxwww | grep ffmpeg | grep $$hConfig{'ip'} | awk '{print $2}'`;
-    print STDERR "Killing FFMPeg\n";
+    my $exe = "ps auxwww | grep ffmpeg | grep $$hConfig{'ip'} | tail -1 | awk '{print $2}'";
+    print STDERR "Killing FFMPeg: $exe\n";
+    my $result = `$exe`;
     `kill -9 $result`;
 }
 
@@ -148,7 +149,11 @@ sub CheckData
     my $ls1 = `$exe`;
 
     # File size hasn't changhed in 10 sec - no data being collected
-    return(0) if($ls0 == $ls1);
+    if($ls0 == $ls1)
+    {
+        print STDERR "LS0 $ls0; LS1 $ls1\n";
+        return(0);
+    }
 
     return(1);
 }
