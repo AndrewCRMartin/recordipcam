@@ -133,7 +133,7 @@ sub DataCheck
 sub KillFFMpeg
 {
     my($hConfig) = @_;
-    my $exe = "ps auxwww | grep ffmpeg | grep $$hConfig{'ip'} | tail -1 | awk '{print $2}'";
+    my $exe = "ps auxwww | grep ffmpeg | grep $$hConfig{'ip'} | tail -1 | awk '{print \$2}'";
     print STDERR "Killing FFMPeg: $exe\n";
     my $result = `$exe`;
     `kill -9 $result`;
