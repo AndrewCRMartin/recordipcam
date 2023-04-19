@@ -99,9 +99,11 @@ sub DeleteOldFiles
         my @files = grep(!/^\./, readdir($dfp));
         foreach my $file (@files)
         {
-            if(($file =~ /\.mkv$/) && ((time - (stat($file))[9] ) > $keep))
+            my $fileName = "$dir/$file";
+            if(($fileName =~ /\.mkv$/) &&
+               ((time - (stat($fileName))[9] ) > $keep))
             {
-                unlink($file);
+                unlink($fileName);
             }
         }
         closedir($dfp);
