@@ -136,21 +136,22 @@ sub KillFFMpeg
 {
     my($hConfig) = @_;
     my $exe = "ps auxwww | grep ffmpeg | grep $$hConfig{'ip'} | tail -1 | awk '{print \$2}'";
-    print STDERR "Killing FFMPeg: $exe\n";
     my $result = `$exe`;
+    print STDERR "Killing FFMPeg: $exe (PID: $result)\n";
     `kill -9 $result`;
+    sleep(2);
 }
 
 sub CheckData
 {
     my($hConfig) = @_;
     my $dataDir = $$hConfig{'outputDir'};
-    my $exe = "ls -ltr $dataDir/*.mkv | tail -1 | awk '{print $5}'";
+    my $exe = "ls -ltr $dataDir/*.mkv | tail -1 | awk '{print \$5}'";
     my $ls0 = `$exe`;
-    sleep(10);
+    sleep(30);
     my $ls1 = `$exe`;
 
-    # File size hasn't changhed in 10 sec - no data being collected
+    # File size hasn't changed in 30 sec - no data being collected
     if($ls0 == $ls1)
     {
         print STDERR "LS0 $ls0; LS1 $ls1\n";
