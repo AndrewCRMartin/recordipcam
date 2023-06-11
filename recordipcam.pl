@@ -5,7 +5,16 @@ use lib '.';
 use config;
 use utils;
 
-my %config = config::ReadConfig('test.cfg');
+my %config = ();
+
+if(scalar(@ARGV))
+{
+    %config = config::ReadConfig($ARGV[0]);
+}
+else
+{
+    %config = config::ReadConfig('test.cfg');
+}
 
 # If the camera's IP address is not up, then exit
 if(!CameraUp($config{'ip'}))
