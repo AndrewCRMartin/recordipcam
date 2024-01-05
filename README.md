@@ -23,8 +23,7 @@ It requires you to specify the following:
 
 - outputDir - The directory where you will store the recordings
 - username  - The username for accessing the camera
-- password  - The password for accessing the camer
-# Specify either the IP address or the MAC address of the camera
+- password  - The password for accessing the camera
 - ip        - The IP address of the camera. Alternatively you can
               specify the MAC address
 - mac       - The MAC address of the camera. This is better if IP
