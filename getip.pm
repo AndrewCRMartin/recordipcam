@@ -1,8 +1,8 @@
 package getip;
 use strict;
 
-my $mac = "38:be:ab:19:4c:d2";
-print GetIPFromMAC($mac); print "\n";
+#my $mac = "38:be:ab:19:4c:d2";
+#print GetIPFromMAC($mac); print "\n";
 
 sub GetIPFromMAC
 {
@@ -52,3 +52,5 @@ sub Run
     chomp $ret;
     return($ret);
 }
+
+1;

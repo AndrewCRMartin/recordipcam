@@ -4,6 +4,14 @@ use strict;
 use lib '.';
 use config;
 use utils;
+use getip;
+
+my $missingExe = utils::CheckExecutables(qw(/usr/bin/ffmpeg /usr/sbin/ip /usr/sbin/ifconfig));
+if($missingExe ne '')
+{
+    print STDERR "The following executables were not found and must be installed:\n$missingExe\n";
+    exit 1;
+}
 
 my %config = ();
 
@@ -13,8 +21,12 @@ if(scalar(@ARGV))
 }
 else
 {
-    %config = config::ReadConfig('test.cfg');
+    %config = config::ReadConfig('recordipcam.cfg');
 }
+
+SetIPFromMAC(\%config);
+SetURL(\%config);
+
 
 # If the camera's IP address is not up, then exit
 if(!CameraUp($config{'ip'}))
@@ -209,6 +221,32 @@ sub RecordVideo
         }
         sleep 60;
     }
+}
+
+#########################################################################
+sub SetIPFromMAC
+{
+    my($hConfig) = @_;
+    if(defined($$hConfig{'mac'}))
+    {
+        my $mac = $$hConfig{'mac'};
+        my $ip = getip::GetIPFromMAC($mac);
+        if($ip == '')
+        {
+            print STDERR "Error: unable to find IP for Camera $mac\n";
+            exit 1;
+        }
+        $$hConfig{'ip'} = $ip;
+    }
+}
+    
+
+#########################################################################
+sub SetURL
+{
+    my($hConfig) = @_;
+    my $ip  = $$hConfig{'ip'};
+    $$hConfig{'url'} =~ s/\[IP\]/$ip/;
 }
 
 #########################################################################
