@@ -21,20 +21,20 @@ either side of the `=` sign (see`template.cfg`).
 
 It requires you to specify the following:
 
-- outputDir - The directory where you will store the recordings
-- username  - The username for accessing the camera
-- password  - The password for accessing the camera
-- ip        - The IP address of the camera. Alternatively you can
-              specify the MAC address
-- mac       - The MAC address of the camera. This is better if IP
-              addresses are automatically allocated by DHCP
-- port      - The port for RTSP access to the camera (normally 554)
-- path      - The path for the camera's feed. For Wansview cameras,
-              this is `/live/ch0`
-- segmentLength - The length of each recording segment in seconds
-                  (e.g. 300 for 5 minutes)
-- keepRecordings - The number of days to keep a recording (e.g. 30)
-- url            - The URL for accessing the camera. This can be
+- `outputDir`      - The directory where you will store the recordings
+- `username`       - The username for accessing the camera
+- `password`       - The password for accessing the camera
+- `ip`             - The IP address of the camera. Alternatively you can
+                   specify the MAC address
+- `mac`            - The MAC address of the camera. This is better if IP
+                   addresses are automatically allocated by DHCP
+- `port`           - The port for RTSP access to the camera (normally 554)
+- `path`           - The path for the camera's feed. For Wansview cameras,
+                   this is `/live/ch0`
+- `segmentLength`  - The length of each recording segment in seconds
+                   (e.g. 300 for 5 minutes)
+- `keepRecordings` - The number of days to keep a recording (e.g. 30)
+- `url`            - The URL for accessing the camera. This can be
                    specified completely or by reference to the values
                    set above.
 
