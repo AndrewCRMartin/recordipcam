@@ -1,8 +1,8 @@
 #!/bin/bash
 
-. ./test.cfg.shed
-nohup ./recordipcam.pl test.cfg.shed &>$outputDir/recordip.log &
+. ./shed.cfg
+nohup ./recordipcam.pl shed.cfg &>$outputDir/recordip.log &
 
-#. ./test.cfg.sittingroom
-#nohup ./recordipcam.pl test.cfg.sittingroom &>$outputDir/recordip.log &
+. ./sittingroom.cfg
+nohup ./recordipcam.pl sittingroom.cfg &>$outputDir/recordip.log &
 
