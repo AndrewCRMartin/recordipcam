@@ -26,6 +26,7 @@ sub GetIPFromMAC
             {
                 print("$networkInterface: $ip\n");
             }
+            chomp $ip;
             return($ip);
         }
     }

@@ -237,6 +237,7 @@ sub SetIPFromMAC
             exit 1;
         }
         $$hConfig{'ip'} = $ip;
+        sleep 2;
     }
 }
     
