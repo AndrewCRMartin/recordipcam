@@ -19,7 +19,7 @@ sub GetIPFromMAC
         # awk print $6 needs improving to find the broadcast address
         Run("ping -b -c 1 $broadcast &>/dev/null", 0, $debug);
 
-        my $ip = Run("ip neighbor | grep -i $mac | awk '{print \$1}'", 0, $debug);
+        my $ip = Run("ip neighbor | grep -i $mac | awk '{print \$1}' | tail -1", 0, $debug);
         if($ip ne '')
         {
             if($debug)
