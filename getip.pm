@@ -18,8 +18,21 @@ sub GetIPFromMAC
                           0, $debug);
         # awk print $6 needs improving to find the broadcast address
         Run("ping -b -c 1 $broadcast &>/dev/null", 0, $debug);
-
         my $ip = Run("ip neighbor | grep -i $mac | awk '{print \$1}' | tail -1", 0, $debug);
+
+        # 08.04.25 Try pinging each address in turn if the ping of the broadcast
+        #          address didn't work
+        if($ip eq '')
+        {
+            for(my $i=1; $i<255; $i++)
+            {
+                my $address = $broadcast;
+                $address =~ s/\.\d+$/\.$i/;
+                `ping -c 1 $address`;
+            }
+            $ip = Run("ip neighbor | grep -i $mac | awk '{print \$1}' | tail -1", 0, $debug);
+        }
+        
         if($ip ne '')
         {
             if($debug)
@@ -30,6 +43,7 @@ sub GetIPFromMAC
             return($ip);
         }
     }
+    return('');
 }
 
 sub Run
