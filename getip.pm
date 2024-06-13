@@ -11,26 +11,31 @@ sub GetIPFromMAC
 
     my $debug = 0;
 
+    # Find the network interfaces
     my @networkInterfaces = Run("ip addr show | awk '/inet.*brd/{print \$NF}'", 1, $debug);
     foreach my $networkInterface (@networkInterfaces)
     {
         my $broadcast=Run("ifconfig | grep --after-context 1 $networkInterface | tail -1 | awk '{print \$6}'",
                           0, $debug);
         # awk print $6 needs improving to find the broadcast address
-        Run("ping -b -c 1 $broadcast &>/dev/null", 0, $debug);
+        Run("ping -b -c 2 $broadcast &>/dev/null", 0, $debug);
         my $ip = Run("ip neighbor | grep -i $mac | awk '{print \$1}' | tail -1", 0, $debug);
 
         # 08.04.25 Try pinging each address in turn if the ping of the broadcast
         #          address didn't work
         if($ip eq '')
         {
+            print "Resorting to finding IP by pinging each host: ";
             for(my $i=1; $i<255; $i++)
             {
                 my $address = $broadcast;
                 $address =~ s/\.\d+$/\.$i/;
                 `ping -c 1 $address`;
+                print ".";
+                $ip = Run("ip neighbor | grep -i $mac | awk '{print \$1}' | tail -1", 0, $debug);
+                last if($ip ne '');
             }
-            $ip = Run("ip neighbor | grep -i $mac | awk '{print \$1}' | tail -1", 0, $debug);
+            print "\n";
         }
         
         if($ip ne '')
