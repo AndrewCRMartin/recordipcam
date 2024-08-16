@@ -168,16 +168,17 @@ sub KillFFMpeg
 sub CheckData
 {
     my($hConfig) = @_;
-    my $dataDir = $$hConfig{'outputDir'};
-    my $exe = "ls -ltr $dataDir/*.mkv | tail -1 | awk '{print \$5}'";
-    my $ls0 = `$exe`;
-    sleep(120);
-    my $ls1 = `$exe`;
+    my $dataDir  = $$hConfig{'outputDir'};
+    my $pause    = 120;
+    my $exe      = "ls -ltr $dataDir/*.mkv | tail -1 | awk '{print \$5}'";
+    my $ls0      = `$exe`;
+    sleep($pause);
+    my $ls1      = `$exe`;
 
-    # File size hasn't changed in 30 sec - no data being collected
+    # File size hasn't changed in $pause sec - no data being collected
     if($ls0 == $ls1)
     {
-        print STDERR "LS0 $ls0; LS1 $ls1\n";
+        print STDERR "File hasn't increased in size in $pause seconds (was: $ls0, now: $ls1)\n";
         return(0);
     }
 
