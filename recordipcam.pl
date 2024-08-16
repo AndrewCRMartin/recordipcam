@@ -88,6 +88,7 @@ sub SignalHandler
     my (@pids) = @_;
     foreach my $pid (@pids)
     {
+        chomp $pid;
         if($pid ne '')
         {
             print STDERR "Killing $pid\n";
@@ -158,6 +159,7 @@ sub KillFFMpeg
     my($hConfig) = @_;
     my $exe = "ps auxwww | grep ffmpeg | grep $$hConfig{'ip'} | tail -1 | awk '{print \$2}'";
     my $result = `$exe`;
+    chomp $result;
     print STDERR "Killing FFMPeg: $exe (PID: $result)\n";
     `kill -9 $result`;
     sleep(2);
@@ -169,7 +171,7 @@ sub CheckData
     my $dataDir = $$hConfig{'outputDir'};
     my $exe = "ls -ltr $dataDir/*.mkv | tail -1 | awk '{print \$5}'";
     my $ls0 = `$exe`;
-    sleep(30);
+    sleep(120);
     my $ls1 = `$exe`;
 
     # File size hasn't changed in 30 sec - no data being collected
